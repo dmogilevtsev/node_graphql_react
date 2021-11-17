@@ -1,19 +1,19 @@
-const express = require('express')
-const cors = require('cors')
-const { uri, client_uri } = require('./utils')
-const { port } = require('./config/index').server
+import express from 'express'
+import cors from 'cors'
+import config from './config'
+import utils from './utils'
 
 const app = express()
 
 app.use(cors({
 	credentials: true,
-	origin: client_uri(),
+	origin: utils.client_uri(),
 }))
 app.use(express.json())
 
-app.listen(port, (err) => {
+app.listen(config.server.port, (err) => {
 	if ( err ) {
 		console.warn(`Server error`, err)
 	}
-	console.log(`Server start on ${ uri() }`)
+	console.log(`Server start on ${ utils.uri() }`)
 })

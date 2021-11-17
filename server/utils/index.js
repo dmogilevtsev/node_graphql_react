@@ -1,6 +1,6 @@
-const { server, client } = require('../config/index')
+import Index from '../config'
 
-const uri = () => `${ server.protocol_http }://${ server.host }:${ server.port }`
-const client_uri = () => `${ client.protocol_http }://${ client.host }:${ client.port }`
+const uri = () => `${ Index.server.protocol_http }://${ Index.server.host }:${ Index.server.port }`
+const client_uri = () => `${ Index.client.protocol_http }://${ Index.client.host }:${ Index.client.port }`
 
-module.exports = { uri, client_uri }
+export default { uri, client_uri }

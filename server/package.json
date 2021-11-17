@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server:dev": "cross-env NODE_ENV=development nodemon index.js",
-    "server:pro": "cross-env NODE_ENV=production nodemon index.js",
+    "build:server": "rimraf ./dist && babel index.js -d dist",
+    "server:dev": "npm run build:server && cross-env NODE_ENV=development nodemon dist/index.js",
+    "server:pro": "npm run build:server && cross-env NODE_ENV=production nodemon index.js",
     "cleint:dev": "npm run start --prefix client",
     "app:dev": "concurrently \"npm run server:dev\" \"npm run cleint:dev\""
   },
@@ -19,9 +20,29 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
-    "graphql": "^16.0.1"
+    "graphql": "^16.0.1",
+    "rimraf": "^3.0.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
     "nodemon": "^2.0.15"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-proposal-object-rest-spread"
+    ]
   }
 }
