@@ -1,5 +1,16 @@
 server/node_modules
-client/node_modules
 .development.env
 .production.env
 .idea
+
+## client
+# dependencies
+client/node_modules
+client/.pnp
+client/.pnp.js
+
+# testing
+client/coverage
+
+# production
+client/build
