@@ -1,9 +1,8 @@
 server/node_modules
 server/dist
-.env
+.development.env
 .production.env
 .idea
-pgdata
 
 ## client
 # dependencies

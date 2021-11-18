@@ -7,7 +7,6 @@ const schema = buildSchema(`
 		id: ID
 		email: String
 		password: String
-		posts: [Post]
 		createdAt: Date
 		updatedAt: Date
 	}
@@ -33,6 +32,11 @@ const schema = buildSchema(`
 	type Query {
 		getAllUsers: [User]
 		getUserById(id: ID): User
+		getUserByEmail(email: String): User
+	}
+	
+	type Mutation {
+		createUser(user: UserInput): User
 	}
 `)
 

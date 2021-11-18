@@ -1,9 +1,11 @@
 import express from 'express'
 import cors from 'cors'
 import { graphqlHTTP } from 'express-graphql'
-import config from './config'
+import { configuration } from './config'
 import utils from './utils'
 import { schema } from './schema'
+import { sequelize } from './config/db'
+import { UserResolver } from './user/user.resolver'
 
 const app = express()
 
@@ -14,13 +16,24 @@ app.use(cors({
 app.use('/graphql', graphqlHTTP({
 	graphiql: true,
 	schema,
+	rootValue: new UserResolver(),
 }))
 app.use(express.json())
 
-app.listen(config.server.port, (err) => {
-	if ( err ) {
-		console.warn(`Server error`, err)
+const start = async () => {
+	try {
+		await sequelize.authenticate()
+		await sequelize.sync()
+	} catch ( e ) {
+		console.warn(`Server error`, e)
 	}
-	console.log(`Server start on ${ utils.uri() }`)
-	console.log(`Graphql start on ${ utils.uri() }/graphql`)
-})
+	app.listen(configuration.server.port, (err) => {
+		if ( err ) {
+			console.warn(`Server error`, err)
+		}
+		console.log(`Server start on ${ utils.uri() }`)
+		console.log(`Graphql start on ${ utils.uri() }/graphql`)
+	})
+}
+
+start()
