@@ -3,7 +3,7 @@ import { User } from './User'
 import { ApiError } from '../error/ApiError'
 
 export class UserService {
-	async createUser({ user }) {
+	static async createUser({ user }) {
 		const { email, password } = user
 		const _user = await User.findOne({ where: { email } })
 		if ( _user ) {
@@ -17,20 +17,20 @@ export class UserService {
 		})
 	}
 
-	async removeUser(id) {
+	static async removeUser({ id }) {
 		const _user = await User.findByPk(id)
 		if ( !_user ) {
 			throw ApiError.badRequest('This user does not exist')
 		}
 		await _user.destroy()
-		return { message: 'User removed' }
+		return 'User removed'
 	}
 
-	async getAllUsers() {
+	static async getAllUsers() {
 		return await User.findAll()
 	}
 
-	async getUserByEmail(email) {
+	static async getUserByEmail({ email }) {
 		const _user = await User.findOne({ where: { email } })
 		if ( !_user ) {
 			throw ApiError.badRequest(`User with email "${ email }" does not exist`)
@@ -38,7 +38,7 @@ export class UserService {
 		return _user
 	}
 
-	async getUserById(id) {
+	static async getUserById({ id }) {
 		const _user = await User.findByPk(id)
 		if ( !_user ) {
 			throw ApiError.badRequest(`This user does not exist`)
@@ -46,7 +46,7 @@ export class UserService {
 		return _user
 	}
 
-	async updateUser(user) {
+	static async updateUser(user) {
 		let hashedPassword
 		if ( user.password ) {
 			const salt = await genSalt(12)

@@ -4,27 +4,34 @@ config({
 	path: `../${ process.env.NODE_ENV === 'development' ? '' : '.' + process.env.NODE_ENV }.env`,
 })
 
+const {
+	NODE_ENV, SERVER_PORT, SERVER_PROTOCOL_HTTP, SERVER_HOST, GRAPHQL_URL, CLIENT_PORT,
+	CLIENT_PROTOCOL_HTTP, CLIENT_HOST, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_TYPE,
+} = process.env
+
+
 export const configuration = {
 	server: {
-		port: Number(process.env.SERVER_PORT),
-		protocol_http: process.env.SERVER_PROTOCOL_HTTP,
-		host: process.env.SERVER_HOST,
+		port: Number(SERVER_PORT),
+		protocol_http: SERVER_PROTOCOL_HTTP,
+		host: SERVER_HOST,
+		graphql: GRAPHQL_URL,
 	},
 	client: {
-		port: Number(process.env.CLIENT_PORT),
-		protocol_http: process.env.CLIENT_PROTOCOL_HTTP,
-		host: process.env.CLIENT_HOST,
+		port: Number(CLIENT_PORT),
+		protocol_http: CLIENT_PROTOCOL_HTTP,
+		host: CLIENT_HOST,
 	},
 	db: {
-		database: process.env.DB_NAME,
-		username: process.env.DB_USER,
-		password: process.env.DB_PASSWORD,
+		database: DB_NAME,
+		username: DB_USER,
+		password: DB_PASSWORD,
 		options: {
-			host: process.env.DB_HOST,
-			port: Number(process.env.DB_PORT),
-			dialect: process.env.DB_TYPE,
-			protocol: process.env.DB_TYPE,
-			log: process.env.NODE_ENV === 'development',
+			host: DB_HOST,
+			port: Number(DB_PORT),
+			dialect: DB_TYPE,
+			protocol: DB_TYPE,
+			log: NODE_ENV === 'development',
 		},
 	},
 }
