@@ -1,18 +1,21 @@
-import { useMutation } from '@apollo/client'
+import {useMutation} from '@apollo/client'
 import React from 'react'
-import { Card, Button, Spinner } from 'react-bootstrap'
-import { TrashFill } from 'react-bootstrap-icons'
-import { REMOVE_USER } from '../../../gql/queries/mutations/users/removeUser'
+import {Button, Card, Spinner} from 'react-bootstrap'
+import {TrashFill} from 'react-bootstrap-icons'
+import {REMOVE_USER} from '../../../gql/queries/mutations/users/removeUser'
+import {useDispatch} from 'react-redux'
+import {removeUserAction} from '../../../actions/user'
 
-const UserItem = ({ user }: any): any => {
-  const [_removeUser, { loading, error }] = useMutation(REMOVE_USER)
+const UserItem = ({user}: any): any => {
+  const dispatch = useDispatch()
+  const [_removeUser, {loading, error}] = useMutation(REMOVE_USER)
   const removeUser = async (id: number) => {
     const res = await _removeUser({
       variables: {
         id,
       },
     })
-    console.log('remove', res)
+    dispatch(removeUserAction(id))
   }
   if (error) {
     console.warn(error)
@@ -20,15 +23,16 @@ const UserItem = ({ user }: any): any => {
   return (
     <Card className="my-1 mx-2 shadow p-1">
       <Card.Body className="pb-1">
-        <Card.Title>
+        <Card.Title className="d-flex align-items-center">
           {user.email}
           <Button
-            variant="danger"
-            onClick={() => removeUser(user.id)}
-            type="button"
-            disabled={loading}
+              variant="danger"
+              onClick={() => removeUser(user.id)}
+              type="button"
+              disabled={loading}
+              className="ms-auto"
           >
-            <TrashFill />
+            <TrashFill/>
             {loading ?? (
               <>
                 <Spinner

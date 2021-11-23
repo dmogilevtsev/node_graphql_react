@@ -1,8 +1,4 @@
-import {
-  getAllUsersReducer,
-  createNewUserReducer,
-  IUser,
-} from '../store/userReducer'
+import {createNewUserReducer, getAllUsersReducer, IUser, removeUserReducer} from '../store/userReducer'
 
 export const getAllUsersAction = (users: IUser[]) => {
   return async (dispatch: any) => {
@@ -13,5 +9,11 @@ export const getAllUsersAction = (users: IUser[]) => {
 export const createUserAction = (user: IUser) => {
   return async (dispatch: any) => {
     dispatch(createNewUserReducer(user))
+  }
+}
+
+export const removeUserAction = (id: number) => {
+  return async (dispatch: any) => {
+    dispatch(removeUserReducer(id))
   }
 }
