@@ -1,52 +1,27 @@
-import { createServer } from 'http'
-import express from 'express'
-import cors from 'cors'
-import { graphqlHTTP } from 'express-graphql'
-import { makeExecutableSchema } from '@graphql-tools/schema'
+import { ApolloServer } from 'apollo-server'
 
-import { configuration } from './config'
-import { utils } from './utils'
-import { sequelize } from './config/db'
 import { typeDefs } from './graphql/typeDefs'
 import { resolvers } from './graphql/resolvers'
+import { sequelize } from './config/db'
+import { configuration } from './config/index'
 
-const ws = require('ws')
-const { useServer } = require('graphql-ws/lib/use/ws')
+const PORT = configuration.server.port || 4000
 
-const schema = makeExecutableSchema({
-	typeDefs,
-	resolvers,
-})
-
-const app = express()
-	.use(cors({
-		credentials: true,
-		origin: utils.client_uri(),
-	}))
-	.use(express.json())
-	.use(`/${ configuration.server.graphql }`, graphqlHTTP({
-		graphiql: true,
-		schema,
-	}))
-
-const server = createServer(app)
-const wsServer = new ws.Server({
-	server,
-	path: `/${ configuration.server.graphql }`,
+const app = new ApolloServer({
+  typeDefs,
+  resolvers,
 })
 
 const start = async () => {
-	try {
-		await sequelize.authenticate()
-		await sequelize.sync()
-	} catch ( e ) {
-		console.warn(`Server error`, e)
-	}
-	server.listen(configuration.server.port, () => {
-		useServer({ schema, roots: resolvers }, wsServer)
-		console.info(`Server start on ${ utils.uri() }`)
-		console.info(`Graphql start on ${ utils.uri() }/${ configuration.server.graphql }`)
-	})
+  try {
+    await sequelize.authenticate()
+    await sequelize.sync()
+  } catch (error) {
+    console.warn('Server error', error)
+  }
+  app.listen(PORT).then(({ url }) => {
+    console.log(`🚀 Server ready at ${url}`) // env variables aren't displaying IDK why
+  })
 }
 
 start()
