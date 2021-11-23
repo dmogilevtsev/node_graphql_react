@@ -1,7 +1,7 @@
 import { config } from 'dotenv'
 
 config({
-	path: `../${ process.env.NODE_ENV === 'development' ? '' : '.' + process.env.NODE_ENV }.env`,
+	path: `../.env`,
 })
 
 const {
