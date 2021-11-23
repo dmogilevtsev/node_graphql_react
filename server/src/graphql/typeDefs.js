@@ -1,13 +1,8 @@
-import { mergeTypeDefs } from '@graphql-tools/merge'
+import { gql } from 'apollo-server'
 import { userTypes } from '../user/user.types'
 
-const schema = /* GraphQL */`
-    schema {
-        query: Query
-        mutation: Mutation
-    }
+export const typeDefs = gql`
+  scalar Date
+
+  ${userTypes}
 `
-
-const types = [ userTypes, schema ]
-
-export const typeDefs = mergeTypeDefs(types)
