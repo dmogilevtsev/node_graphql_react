@@ -7,8 +7,8 @@ interface IAction {
     payload: IUser | number
 }
 
-interface IDefaultState {
-    users: IUser[]
+export interface IDefaultState<T> {
+    users: T[]
 }
 
 export interface IUser {
@@ -18,12 +18,12 @@ export interface IUser {
     createdAt?: string
 }
 
-const defaultState: IDefaultState = {
+const defaultState: IDefaultState<IUser> = {
     users: [],
 }
 
 // eslint-disable-next-line
-export default (state: IDefaultState = defaultState, action: IAction) => {
+export default (state: IDefaultState<IUser> = defaultState, action: IAction) => {
     switch (action.type) {
         case CREATE_USER:
             return {

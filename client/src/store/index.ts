@@ -1,19 +1,22 @@
-import { applyMiddleware, combineReducers, createStore } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
-import { IUser } from './userReducer'
-import thunk from 'redux-thunk'
+import {applyMiddleware, combineReducers, createStore} from 'redux'
+import {composeWithDevTools} from 'redux-devtools-extension'
 import userReducer from './userReducer'
+import thunk from 'redux-thunk'
+import notificationsReducer from './notificationsReducer'
 
-export interface IStore {
-  user: IState
+export interface IDefaultState {
+  users?: []
+  toasts?: []
 }
 
-export interface IState {
-  users: IUser[]
+export interface IRootState {
+  user?: IDefaultState
+  toast?: IDefaultState
 }
 
 const rootReducer = combineReducers({
   user: userReducer,
+  toast: notificationsReducer,
 })
 
 export const store = createStore(

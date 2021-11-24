@@ -2,9 +2,11 @@ import {useMutation} from '@apollo/client'
 import React from 'react'
 import {Button, Card, Spinner} from 'react-bootstrap'
 import {TrashFill} from 'react-bootstrap-icons'
-import {REMOVE_USER} from '../../../gql/queries/mutations/users/removeUser'
+import {REMOVE_USER} from '../../../gql/mutations/users/removeUser'
 import {useDispatch} from 'react-redux'
 import {removeUserAction} from '../../../actions/user'
+import {IToast, ToastBg} from '../../../store/notificationsReducer'
+import {notificationAction} from '../../../actions/notification'
 
 const UserItem = ({user}: any): any => {
   const dispatch = useDispatch()
@@ -16,9 +18,22 @@ const UserItem = ({user}: any): any => {
       },
     })
     dispatch(removeUserAction(id))
+    const toast: IToast = {
+      id: new Date().toString(),
+      title: 'Удаление',
+      body: res.data.removeUser,
+      bg: ToastBg.WARNING,
+    }
+    dispatch(notificationAction(toast))
   }
   if (error) {
-    console.warn(error)
+    const toast: IToast = {
+      id: new Date().toString(),
+      title: 'Ошибка удаления',
+      body: error.message,
+      bg: ToastBg.DANGER,
+    }
+    dispatch(notificationAction(toast))
   }
   return (
     <Card className="my-1 mx-2 shadow p-1">
