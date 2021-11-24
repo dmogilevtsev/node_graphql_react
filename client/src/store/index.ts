@@ -5,21 +5,21 @@ import thunk from 'redux-thunk'
 import notificationsReducer from './notificationsReducer'
 
 export interface IDefaultState {
-  users?: []
-  toasts?: []
+    users?: []
+    toasts?: []
 }
 
 export interface IRootState {
-  user?: IDefaultState
-  toast?: IDefaultState
+    user?: IDefaultState
+    toast?: IDefaultState
 }
 
 const rootReducer = combineReducers({
-  user: userReducer,
-  toast: notificationsReducer,
+    user: userReducer,
+    toast: notificationsReducer,
 })
 
 export const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
+    rootReducer,
+    composeWithDevTools(applyMiddleware(thunk)),
 )
